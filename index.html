@@ -235,57 +235,62 @@
             font-size: calc(16px + 0.5vw);
         }
 
-        .image-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-        }
+.image-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
 
         .image-modal.active {
             display: flex;
             animation: fadeIn 0.3s;
         }
 
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-        }
+.modal-content {
+    position: relative;
+    max-width: 90vw;  /* 最大宽度为视窗宽度的90% */
+    max-height: 90vh; /* 最大高度为视窗高度的90% */
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .modal-image {
-            max-width: 80vw;
-            max-height: 80vh;
-            border-radius: 10px;
-            border: 3px solid var(--accent-blue);
-        }
+.modal-image {
+    max-width: 100%;  /* 图片最大宽度为容器宽度 */
+    max-height: 100%; /* 图片最大高度为容器高度 */
+    object-fit: contain; /* 保持比例自适应容器 */
+    border-radius: 10px;
+    border: 3px solid var(--accent-blue);
+}
 
-        .close-btn {
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            width: 40px;
-            height: 40px;
-            background: var(--accent-blue);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-size: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s;
-        }
+.close-btn {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 40px;
+    height: 40px;
+    background: var(--accent-blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+    z-index: 1001; /* 确保在图片上方 */
+}
 
         .close-btn:hover {
             transform: rotate(90deg) scale(1.1);
