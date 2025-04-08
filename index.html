@@ -507,11 +507,11 @@
 
         const prizes = [
             {
-                name: '黃金貼紙 ✨',
-                points: 50,
-                stock: 10,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=1'
+                name: '[第3彈] <br> 小馬寶莉彩虹包',
+                points: 1,
+                stock: 30,
+                category: 'pony',
+                image: 'image/ponycard_v3.jpg'
             },
             {
                 name: '恐龍橡皮擦 🦖',
@@ -677,7 +677,7 @@
             grid.innerHTML = prizeList.map(prize => `
                 <div class="prize-card">
                     <img src="${prize.image}" class="prize-image" alt="${prize.name}">
-                    <h2 style="color:var(--text-blue);">${prize.name}</h2>
+                    <h3 style="color:var(--text-blue);">${prize.name}</h3>
                     <div class="points">
                         ${prize.points} 顆星星 ⭐
                         ${currentUser.points >= prize.points && prize.stock > 0 ?
