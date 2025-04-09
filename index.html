@@ -39,7 +39,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 1000;
+            z-index: 999;
             display: none;
 
         }
@@ -67,7 +67,7 @@
             position: fixed;
             top: 75px;
             right: 20px;
-            z-index: 1000;
+            z-index: 999;
             display: none;
         }
 
@@ -254,34 +254,31 @@
         }
 
         .modal-content {
-            position: relative;
-            max-width: 90vw;
-            /* 最大宽度为视窗宽度的90% */
-            max-height: 90vh;
-            /* 最大高度为视窗高度的90% */
-            background: white;
-            padding: 10px;
-            border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            /* 移除固定尺寸限制 */
+            max-width: none;
+            max-height: none;
+            /* 改為自動適應內容 */
+            width: auto;
+            height: auto;
+            padding: 0;
+            /* 移除內間距 */
         }
 
         .modal-image {
-            max-width: 90%;
-            /* 图片最大宽度为容器宽度 */
-            max-height: 90%;
-            /* 图片最大高度为容器高度 */
-            object-fit: contain;
-            /* 保持比例自适应容器 */
-            border-radius: 10px;
+            /* 直接在圖片上添加邊框 */
             border: 3px solid var(--accent-blue);
+            border-radius: 10px;
+            /* 容器根據圖片尺寸自動調整 */
+            display: block;
+            max-width: 80vw;
+            max-height: 80vh;
+            margin: 0 auto;
         }
 
         .close-btn {
             position: absolute;
-            top: -15px;
-            right: -15px;
+            top: 135px;
+            right: 5px;
             width: 40px;
             height: 40px;
             background: var(--accent-blue);
