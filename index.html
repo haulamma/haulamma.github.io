@@ -41,7 +41,7 @@
             right: 20px;
             z-index: 1000;
             display: none;
-            
+
         }
 
         .history-link {
@@ -235,62 +235,68 @@
             font-size: calc(16px + 0.5vw);
         }
 
-.image-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 999;
-    justify-content: center;
-    align-items: center;
-}
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
 
         .image-modal.active {
             display: flex;
             animation: fadeIn 0.3s;
         }
 
-.modal-content {
-    position: relative;
-    max-width: 90vw;  /* 最大宽度为视窗宽度的90% */
-    max-height: 90vh; /* 最大高度为视窗高度的90% */
-    background: white;
-    padding: 10px;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            /* 最大宽度为视窗宽度的90% */
+            max-height: 90vh;
+            /* 最大高度为视窗高度的90% */
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.modal-image {
-    max-width: 100%;  /* 图片最大宽度为容器宽度 */
-    max-height: 100%; /* 图片最大高度为容器高度 */
-    object-fit: contain; /* 保持比例自适应容器 */
-    border-radius: 10px;
-    border: 3px solid var(--accent-blue);
-}
+        .modal-image {
+            max-width: 90%;
+            /* 图片最大宽度为容器宽度 */
+            max-height: 90%;
+            /* 图片最大高度为容器高度 */
+            object-fit: contain;
+            /* 保持比例自适应容器 */
+            border-radius: 10px;
+            border: 3px solid var(--accent-blue);
+        }
 
-.close-btn {
-    position: absolute;
-    top: -15px;
-    right: -15px;
-    width: 40px;
-    height: 40px;
-    background: var(--accent-blue);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s;
-    z-index: 1001; /* 确保在图片上方 */
-}
+        .close-btn {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            z-index: 1001;
+            /* 确保在图片上方 */
+        }
 
         .close-btn:hover {
             transform: rotate(90deg) scale(1.1);
@@ -390,7 +396,7 @@
         <div style="font-size:1em;color:var(--text-blue);text-align: center; width: 100%;">📞請主動聯絡巧琳阿姨獲取⭐⭐</div>
         <div class="category-filter" id="categoryFilter">
             <button class="category-btn active" data-category="all">🌟全部獎品🌟</button>
-            <button class="category-btn" data-category="pony">🌈 My Little Pony </button>            
+            <button class="category-btn" data-category="pony">🌈 My Little Pony </button>
             <button class="category-btn" data-category="min">👾 Minecraft</button>
             <button class="category-btn" data-category="nezha">🤠 哪吒</button>
             <button class="category-btn" data-category="other">🕊️ 文具/其他</button>
