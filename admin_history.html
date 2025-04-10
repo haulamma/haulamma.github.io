@@ -2,6 +2,9 @@
 <html lang="zh-Hant">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星星記錄 - Admin</title>
     <style>
         :root {
             --primary-blue: #E3F2FD;
@@ -23,32 +26,48 @@
             min-height: 100vh;
         }
 
-        /* 历史页面样式 */
+        /* 歷史頁面容器 */
         .history-container {
+            width: 90%;
             max-width: 800px;
-            margin: 80px auto;
-            padding: 30px;
+            margin: 30px auto;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.98);
-            border-radius: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(179, 229, 252, 0.2);
         }
 
+        /* 響應式表格 */
         .history-table {
             width: 100%;
-            border-collapse: collapse;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
         .history-table th,
         .history-table td {
-            padding: 15px;
+            padding: 12px;
             border-bottom: 2px solid var(--secondary-blue);
             text-align: left;
+            font-size: calc(13px + 0.3vmin);
         }
 
         .history-table tr:hover {
             background: var(--primary-blue);
         }
 
+        /* 防止文字和emoji換行 */
+        .no-break {
+            white-space: nowrap;
+        }
+
+        /* 返回按鈕 */
         .back-btn {
             display: inline-block;
             padding: 12px 25px;
@@ -58,6 +77,7 @@
             text-decoration: none;
             margin-bottom: 20px;
             transition: all 0.3s;
+            font-size: calc(14px + 0.5vmin);
         }
 
         .back-btn:hover {
@@ -65,281 +85,104 @@
             background: var(--hover-blue);
         }
 
-        .login-container {
-            width: 90vw;
-            max-width: 500px;
-            min-width: 300px;
-            margin: 5vh auto;
-            padding: 25px;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 20px;
-            box-shadow: 0 8px 16px rgba(179, 229, 252, 0.3);
-            border: 2px solid var(--accent-blue);
-        }
-
-        .category-filter {
-            display: flex;
-            gap: 10px;
-            padding: 15px 5%;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .category-btn {
-            padding: 12px 25px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid var(--accent-blue);
-            color: var(--text-blue);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: calc(14px + 0.5vmin);
-        }
-
-        .category-btn.active {
-            background: var(--accent-blue);
-            color: white;
-            transform: scale(1.05);
-        }
-
-        .category-btn:hover {
-            background: var(--hover-blue);
-            color: white;
-        }
-
-        .prize-grid {
-            display: grid;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .prize-card {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s;
-            border: 2px solid var(--accent-blue);
-            box-shadow: 0 4px 12px rgba(179, 229, 252, 0.2);
-        }
-
-        .prize-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(179, 229, 252, 0.3);
-        }
-
-        .prize-image {
-            width: 20vmin;
-            height: 20vmin;
-            max-width: 150px;
-            max-height: 150px;
-            object-fit: cover;
-            border-radius: 25%;
-            margin: 0 auto 15px;
-            border: 3px solid var(--secondary-blue);
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .prize-image:hover {
-            transform: scale(1.05);
-        }
-
-        .points {
-            color: var(--text-blue);
-            font-size: calc(18px + 0.5vmin);
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        input {
-            width: 100%;
-            padding: 3vmin;
-            margin: 10px 0;
-            border: 2px solid var(--accent-blue);
-            border-radius: 25px;
-            font-size: calc(14px + 0.5vmin);
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        button {
-            background: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: calc(16px + 0.5vmin);
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            border: 2px solid var(--hover-blue);
-        }
-
-        button:hover {
-            background: var(--hover-blue);
-            transform: scale(1.05);
-        }
-
-        button:active {
-            transform: scale(0.95);
-        }
-
-        .stock {
-            color: var(--text-blue);
-            font-size: calc(12px + 0.5vmin);
-            opacity: 0.8;
-        }
-
-        .header {
+        /* 標題樣式 */
+        h1 {
             text-align: center;
             color: var(--text-blue);
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
             margin: 20px 0;
             font-size: calc(24px + 1vw);
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         }
 
-        .points-display {
-            text-align: center;
-            color: var(--text-blue);
-            margin: 20px auto;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
-            max-width: 400px;
-            border: 3px dashed var(--accent-blue);
-            animation: float 3s ease-in-out infinite;
-            font-size: calc(16px + 0.5vw);
-        }
-
-        .image-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .image-modal.active {
-            display: flex;
-            animation: fadeIn 0.3s;
-        }
-
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-        }
-
-        .modal-image {
-            max-width: 80vw;
-            max-height: 80vh;
-            border-radius: 10px;
-            border: 3px solid var(--accent-blue);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            width: 40px;
-            height: 40px;
-            background: var(--accent-blue);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-size: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s;
-        }
-
-        .close-btn:hover {
-            transform: rotate(90deg) scale(1.1);
-            background: var(--hover-blue);
-        }
-
-        /* 媒體查詢 */
-        @media (orientation: landscape) {
-            .prize-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        /* 響應式設計調整 */
+        @media (max-width: 768px) {
+            .history-container {
+                margin: 15px auto;
+                padding: 15px;
             }
 
-            .header::after {
-                display: block;
-                font-size: 0.8em;
-                animation: rotateHint 2s infinite;
+            h1 {
+                font-size: calc(22px + 1vmin);
+                margin: 15px 0;
             }
-        }
 
-        @media (orientation: portrait) {
-            .prize-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-        }
-
-        @media (max-width: 600px) {
-            .prize-card {
+            .back-btn {
                 width: 100%;
+                text-align: center;
+                padding: 12px 20px;
             }
 
-            .login-container {
-                margin: 20px auto;
+            .history-table th,
+            .history-table td {
+                padding: 10px 8px;
+                font-size: calc(14px + 0.3vmin);
             }
 
-            .modal-image {
-                max-width: 95vw;
-                max-height: 95vh;
-            }
-
-            .category-btn {
-                padding: 10px 20px;
-            }
+            /* 設置各列最小寬度 */
+            .history-table th:nth-child(1),
+            .history-table td:nth-child(1) { min-width: 90px; } /* 日期列 */
+            .history-table th:nth-child(2),
+            .history-table td:nth-child(2) { min-width: 120px; } /* 事由列 */
+            .history-table th:nth-child(3),
+            .history-table td:nth-child(3) { min-width: 90px; } /* 星星列 */
         }
 
-        /* 動畫 */
+        @media (max-width: 480px) {
+            .history-container {
+                width: 95%;
+                padding: 10px;
+            }
+
+            body {
+                padding: 10px;
+            }
+
+            .history-table th,
+            .history-table td {
+                font-size: calc(13px + 0.3vmin);
+                padding: 8px 6px;
+            }
+
+            .back-btn {
+                font-size: calc(13px + 0.5vmin);
+            }
+
+            /* 調整最小寬度 */
+            .history-table th:nth-child(1),
+            .history-table td:nth-child(1) { min-width: 80px; }
+            .history-table th:nth-child(2),
+            .history-table td:nth-child(2) { min-width: 100px; }
+            .history-table th:nth-child(3),
+            .history-table td:nth-child(3) { min-width: 80px; }
+        }
+
+        @media (max-width: 360px) {
+            .history-table th,
+            .history-table td {
+                padding: 6px 4px;
+                font-size: calc(12px + 0.3vmin);
+            }
+
+            /* 極小螢幕調整 */
+            .history-table th:nth-child(1),
+            .history-table td:nth-child(1) { min-width: 70px; }
+            .history-table th:nth-child(2),
+            .history-table td:nth-child(2) { min-width: 90px; }
+            .history-table th:nth-child(3),
+            .history-table td:nth-child(3) { min-width: 70px; }
+        }
+
+        /* 動畫效果 */
         @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes rotateHint {
-            50% {
-                transform: rotate(5deg);
-            }
+        .back-btn {
+            animation: float 3s ease-in-out infinite;
         }
     </style>
-
-    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -347,23 +190,35 @@
         <h1>🌟 星星兌換記錄 - Admin</h1>
         <a href="index.html" class="back-btn">🏠 返回首頁</a>
 
-        <table class="history-table">
-            <tr>
-                <th>📅 日期</th>
-                <th>📝 事由</th>
-                <th>⭐ 星星變化</th>
-            </tr>
-            <tr>
-                <td>2024-05-01</td>
-                <td>兌換太空人公仔</td>
-                <td>-80</td>
-            </tr>
-            <tr>
-                <td>2024-04-28</td>
-                <td>完成數學作業獎勵</td>
-                <td>+50</td>
-            </tr>
-        </table>
+        <div class="history-table">
+            <table>
+                <tr>
+                    <th class="no-break">📅 日期</th>
+                    <th class="no-break">📝 事由</th>
+                    <th class="no-break">⭐ 星星變化</th>
+                </tr>
+                <tr>
+                    <td>2024-03-15</td>
+                    <td>中文默書 (93分)</td>
+                    <td>+1.5 ⭐</td>
+                </tr>
+                <tr>
+                    <td>2024-03-10</td>
+                    <td>英文默書 (100分)</td>
+                    <td>+3 ⭐</td>
+                </tr>
+                <tr>
+                    <td>2024-03-05</td>
+                    <td>數學測驗 (85分)</td>
+                    <td>+1 ⭐</td>
+                </tr>
+                <tr>
+                    <td>2024-02-28</td>
+                    <td>兌換小馬寶莉卡包</td>
+                    <td>-0.5 ⭐</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
 

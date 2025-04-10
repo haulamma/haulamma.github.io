@@ -318,8 +318,28 @@
         @media (max-width: 600px) {
             .prize-card {
                 width: 100%;
+                max-width: 350px;
+                /* 增加卡片最大寬度 */
+                margin: 0 auto;
+                /* 居中顯示 */
             }
 
+            .prize-image {
+                width: 40vmin;
+                /* 增大圖片尺寸 */
+                height: 40vmin;
+                max-width: 200px;
+                max-height: 200px;
+            }
+
+            .prize-grid {
+                grid-template-columns: 1fr;
+                /* 確保單列顯示 */
+                justify-items: center;
+                /* 卡片居中 */
+            }
+
+            /* 其他現有的移動端樣式保持不變 */
             .login-container {
                 margin: 20px auto;
             }
@@ -411,7 +431,7 @@
         const SESSION_TIMEOUT = 10 * 60 * 1000; // 10分钟会话有效期
         const users = {
             'admin': { pw: '123456', points: 200, history: 'admin_history.html' },
-            'starry': { pw: '161104', points: 1.5, history: 'starry_history.html' },
+            'starry': { pw: '161104', points: 3, history: 'starry_history.html' },
             'lucas': { pw: '190228', points: 0, history: 'lucas_history.html' }
         };
 
@@ -512,101 +532,101 @@
 
         const prizes = [
             {
-                name: '[第3彈] <br> 小馬寶莉彩虹包',
+                name: '[卡牌-第1彈] <br> 小馬寶莉彩虹包',
                 points: 0.5,
                 stock: 30,
                 category: 'pony',
-                image: 'image/ponycard_v3.jpg'
+                image: 'image/ponycard_v1.jpeg'
             },
             {
-                name: '恐龍橡皮擦 🦖',
-                points: 30,
-                stock: 5,
-                category: 'stationery',
-                image: 'https://picsum.photos/200/200?random=2'
+                name: '[卡牌-第2彈] <br> 小馬寶莉彩虹包',
+                points: 0.5,
+                stock: 30,
+                category: 'pony',
+                image: 'image/ponycard_v2.jpeg'
             },
             {
-                name: '閃光鉛筆 ✏️',
-                points: 20,
+                name: '[卡牌-第3彈] <br> 小馬寶莉彩虹包',
+                points: 0.5,
+                stock: 30,
+                category: 'pony',
+                image: 'image/ponycard_v3.jpeg'
+            },
+            {
+                name: '[扭蛋簿-藍色] <br> 小馬寶莉',
+                points: 1.5,
+                stock: 1,
+                category: 'pony',
+                image: 'image/ponybook_1.jpeg'
+            },
+            {
+                name: '[鎖匙扣燈] <br> Minecraft',
+                points: 1,
+                stock: 4,
+                category: 'min',
+                image: 'image/minecraft_04.jpeg'
+            },
+            {
+                name: '[盲盒Lego] <br> Minecraft',
+                points: 1.5,
                 stock: 8,
-                category: 'stationery',
-                image: 'https://picsum.photos/200/200?random=3'
+                category: 'min',
+                image: 'image/minecraft_01.jpeg'
             },
             {
-                name: '太空人公仔 👨🚀',
+                name: '[盲盒鎖匙扣] <br> Minecraft',
+                points: 1,
+                stock: 24,
+                category: 'min',
+                image: 'image/minecraft_02.jpeg'
+            },
+            {
+                name: '[卡牌] <br> Minecraft',
+                points: 0.5,
+                stock: 30,
+                category: 'min',
+                image: 'image/minecraft_03.jpeg'
+            },
+            {
+                name: '[卡牌-第2彈] <br> 哪吒2',
+                points: 0.2,
+                stock: 120,
+                category: 'nezha',
+                image: 'image/nezha_1.jpeg'
+            },
+            {
+                name: '[卡牌-第1彈] <br> 哪吒2',
+                points: 0.5,
+                stock: 30,
+                category: 'nezha',
+                image: 'image/nezha_2.jpeg'
+            },
+            {
+                name: '[鎖匙扣] <br> 哪吒',
                 points: 80,
                 stock: 3,
-                category: 'toy',
+                category: 'nezha',
                 image: 'https://picsum.photos/200/200?random=4'
             },
             {
-                name: '彩虹貼紙 🌈',
-                points: 15,
-                stock: 20,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=5'
+                name: '[鎖匙扣] <br> 敖丙',
+                points: 80,
+                stock: 3,
+                category: 'nezha',
+                image: 'https://picsum.photos/200/200?random=4'
             },
             {
-                name: '彩虹貼紙 🌈',
-                points: 15,
-                stock: 20,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=5'
+                name: '[捏捏樂] <br> 哪吒',
+                points: 80,
+                stock: 1,
+                category: 'nezha',
+                image: 'https://picsum.photos/200/200?random=4'
             },
             {
-                name: '彩虹貼紙 🌈',
+                name: '[捏捏樂] <br> 敖丙',
                 points: 15,
-                stock: 20,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=5'
-            },
-            {
-                name: '彩虹貼紙 🌈',
-                points: 15,
-                stock: 20,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=5'
-            },
-            {
-                name: '彩虹貼紙 🌈',
-                points: 15,
-                stock: 20,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=5'
-            },
-            {
-                name: '彩虹貼紙 🌈',
-                points: 15,
-                stock: 20,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=5'
-            },
-            {
-                name: '彩虹貼紙 🌈',
-                points: 15,
-                stock: 20,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=5'
-            },
-            {
-                name: '彩虹貼紙 🌈',
-                points: 15,
-                stock: 20,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=5'
-            },
-            {
-                name: '彩虹貼紙 🌈',
-                points: 15,
-                stock: 20,
-                category: 'sticker',
-                image: 'https://picsum.photos/200/200?random=5'
-            },
-            {
-                name: '彩虹貼紙 🌈',
-                points: 15,
-                stock: 20,
-                category: 'sticker',
+                stock: 1,
+                category: 'nezha',
                 image: 'https://picsum.photos/200/200?random=5'
             },
             {
@@ -678,20 +698,29 @@
         }
 
         function renderPrizes(prizeList) {
+            // 先複製陣列以避免修改原始數據
+            const shuffledPrizes = [...prizeList].sort(() => Math.random() - 0.5);
+
+            // 使用 Fisher-Yates 洗牌算法進行隨機排序
+            for (let i = shuffledPrizes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledPrizes[i], shuffledPrizes[j]] = [shuffledPrizes[j], shuffledPrizes[i]];
+            }
+
             const grid = document.getElementById('prizeGrid');
-            grid.innerHTML = prizeList.map(prize => `
-                <div class="prize-card">
-                    <img src="${prize.image}" class="prize-image" alt="${prize.name}">
-                    <h3 style="color:var(--text-blue);">${prize.name}</h3>
-                    <div class="points">
-                        ${prize.points} 顆星星 ⭐
-                        ${currentUser.points >= prize.points && prize.stock > 0 ?
+            grid.innerHTML = shuffledPrizes.map(prize => `
+        <div class="prize-card">
+            <img src="${prize.image}" class="prize-image" alt="${prize.name}">
+            <h3 style="color:var(--text-blue);">${prize.name}</h3>
+            <div class="points">
+                ${prize.points} 顆 ⭐
+                ${currentUser.points >= prize.points && prize.stock > 0 ?
                     '<div style="color:var(--accent-blue);">✓ 可以兌換</div>' :
                     '<div style="color:var(--text-blue);opacity:0.6;">✗ 無法兌換</div>'}
-                    </div>
-                    <div class="stock">剩餘數量：${prize.stock}</div>
-                </div>
-            `).join('');
+            </div>
+            <div class="stock">剩餘數量：${prize.stock}</div>
+        </div>
+    `).join('');
 
             initImageClick();
         }

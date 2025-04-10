@@ -46,7 +46,7 @@
         }
 
         table {
-            min-width: 600px;
+            width: 100%;
             border-collapse: collapse;
         }
 
@@ -60,6 +60,11 @@
 
         .history-table tr:hover {
             background: var(--primary-blue);
+        }
+
+        /* 防止文字和emoji換行 */
+        .no-break {
+            white-space: nowrap;
         }
 
         /* 返回按鈕 */
@@ -109,8 +114,17 @@
 
             .history-table th,
             .history-table td {
-                padding: 10px;
+                padding: 10px 8px;
+                font-size: calc(14px + 0.3vmin);
             }
+
+            /* 設置各列最小寬度 */
+            .history-table th:nth-child(1),
+            .history-table td:nth-child(1) { min-width: 90px; } /* 日期列 */
+            .history-table th:nth-child(2),
+            .history-table td:nth-child(2) { min-width: 120px; } /* 事由列 */
+            .history-table th:nth-child(3),
+            .history-table td:nth-child(3) { min-width: 90px; } /* 星星列 */
         }
 
         @media (max-width: 480px) {
@@ -125,13 +139,37 @@
 
             .history-table th,
             .history-table td {
-                font-size: calc(12px + 0.3vmin);
-                padding: 8px;
+                font-size: calc(13px + 0.3vmin);
+                padding: 8px 6px;
             }
 
             .back-btn {
                 font-size: calc(13px + 0.5vmin);
             }
+
+            /* 調整最小寬度 */
+            .history-table th:nth-child(1),
+            .history-table td:nth-child(1) { min-width: 80px; }
+            .history-table th:nth-child(2),
+            .history-table td:nth-child(2) { min-width: 100px; }
+            .history-table th:nth-child(3),
+            .history-table td:nth-child(3) { min-width: 80px; }
+        }
+
+        @media (max-width: 360px) {
+            .history-table th,
+            .history-table td {
+                padding: 6px 4px;
+                font-size: calc(12px + 0.3vmin);
+            }
+
+            /* 極小螢幕調整 */
+            .history-table th:nth-child(1),
+            .history-table td:nth-child(1) { min-width: 70px; }
+            .history-table th:nth-child(2),
+            .history-table td:nth-child(2) { min-width: 90px; }
+            .history-table th:nth-child(3),
+            .history-table td:nth-child(3) { min-width: 70px; }
         }
 
         /* 動畫效果 */
@@ -155,16 +193,20 @@
         <div class="history-table">
             <table>
                 <tr>
-                    <th>📅 日期</th>
-                    <th>📝 事由</th>
-                    <th>⭐ 星星變化</th>
+                    <th class="no-break">📅 日期</th>
+                    <th class="no-break">📝 事由</th>
+                    <th class="no-break">⭐ 星星變化</th>
                 </tr>
                 <tr>
-                    <td>2024-03-15</td>
-                    <td>中文默書 (93分)</td>
-                    <td>+1.5 ⭐</td>
+                    <td>2025-04-01</td>
+                    <td>英文默書 (93分)</td>
+                    <td>⭐+1.5</td>
                 </tr>
-                
+                <tr>
+                    <td>2025-04-10</td>
+                    <td>中文默書 (95分)</td>
+                    <td>⭐+1.5 </td>
+                </tr>                
             </table>
         </div>
     </div>
