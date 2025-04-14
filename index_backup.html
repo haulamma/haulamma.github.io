@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>楊楊獎品屋 🌊</title>
+    <style>
+        :root {
+            --primary-blue: #E3F2FD;
+            --secondary-blue: #B3E5FC;
+            --accent-blue: #81D4FA;
+            --text-blue: #0277BD;
+            --hover-blue: #4FC3F7;
+        }
+
+        /*:root {
+            --primary-blue: #FFFFFF;
+            --secondary-blue: #E8D5FF;
+            --accent-blue: #D8B4FF;
+            --text-blue: #8A4EBF;
+            --hover-blue: #C89AFF;
+        }--primary-blue: #F9F0FF;*/
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 120%);
+            min-height: 100vh;
+        }
+
+        /* 历史记录按钮 */
+        #historyBtn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            display: none;
+
+        }
+
+        .history-link {
+            background: var(--accent-blue);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            border: var(--hover-blue) solid 2px;
+
+        }
+
+        .history-link:hover {
+            transform: translateY(-2px);
+            background: var(--hover-blue);
+        }
+
+        /* 登出按钮 */
+        #logoutBtn {
+            position: fixed;
+            top: 75px;
+            right: 20px;
+            z-index: 999;
+            display: none;
+        }
+
+        .logout-link {
+            background: var(--accent-blue);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            border: var(--hover-blue) solid 2px;
+        }
+
+        .logout-link:hover {
+            background: var(--hover-blue);
+            transform: scale(1.05);
+        }
+
+        .login-container {
+            width: 90vw;
+            max-width: 500px;
+            min-width: 300px;
+            margin: 5vh auto;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(179, 229, 252, 0.3);
+            border: 2px solid var(--accent-blue);
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 10px;
+            padding: 15px 5%;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .category-btn {
+            padding: 12px 25px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--accent-blue);
+            color: var(--text-blue);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: calc(14px + 0.5vmin);
+        }
+
+        .category-btn.active {
+            background: var(--accent-blue);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .category-btn:hover {
+            background: var(--hover-blue);
+            color: white;
+        }
+
+        .prize-grid {
+            display: grid;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .prize-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 2px solid var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(179, 229, 252, 0.2);
+        }
+
+        .prize-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(179, 229, 252, 0.3);
+        }
+
+        .prize-image {
+            width: 20vmin;
+            height: 20vmin;
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 25%;
+            margin: 0 auto 15px;
+            border: 3px solid var(--secondary-blue);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .prize-image:hover {
+            transform: scale(1.05);
+        }
+
+        .points {
+            color: var(--text-blue);
+            font-size: calc(18px + 0.5vmin);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 3vmin;
+            margin: 10px 0;
+            border: 2px solid var(--accent-blue);
+            border-radius: 25px;
+            font-size: calc(14px + 0.5vmin);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        button {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: calc(16px + 0.5vmin);
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            border: 2px solid var(--hover-blue);
+        }
+
+        button:hover {
+            background: var(--hover-blue);
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .stock {
+            color: var(--text-blue);
+            font-size: calc(12px + 0.5vmin);
+            opacity: 0.8;
+        }
+
+        .header {
+            text-align: center;
+            color: var(--text-blue);
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            margin: 20px 0;
+            font-size: calc(24px + 1vw);
+        }
+
+        .points-display {
+            text-align: center;
+            color: var(--text-blue);
+            margin: 20px auto;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            max-width: 450px;
+            border: 3px dashed var(--accent-blue);
+            animation: float 3s ease-in-out infinite;
+            font-size: calc(16px + 0.5vw);
+        }
+
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-image {
+            /* 直接在圖片上添加邊框 */
+            border: 3px solid var(--accent-blue);
+            border-radius: 10px;
+            /* 容器根據圖片尺寸自動調整 */
+            display: block;
+            max-width: 80vw;
+            max-height: 80vh;
+            margin: 0 auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            bottom: -60px;
+            /* 調整這個值來控制按鈕與圖片之間的距離 */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--accent-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            z-index: 1001;
+        }
+
+        .close-btn:hover {
+            transform: translateX(-50%) rotate(90deg) scale(1.1);
+            background: var(--hover-blue);
+        }
+
+        @media (orientation: landscape) {
+            .prize-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .header::after {
+                display: block;
+                font-size: 0.8em;
+                animation: rotateHint 2s infinite;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .prize-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .prize-card {
+                width: 100%;
+                max-width: 350px;
+                /* 增加卡片最大寬度 */
+                margin: 0 auto;
+                /* 居中顯示 */
+            }
+
+            .prize-image {
+                width: 40vmin;
+                /* 增大圖片尺寸 */
+                height: 40vmin;
+                max-width: 200px;
+                max-height: 200px;
+            }
+
+            .prize-grid {
+                grid-template-columns: 1fr;
+                /* 確保單列顯示 */
+                justify-items: center;
+                /* 卡片居中 */
+            }
+
+            /* 其他現有的移動端樣式保持不變 */
+            .login-container {
+                margin: 20px auto;
+            }
+
+            .modal-image {
+                max-width: 95vw;
+                max-height: 95vh;
+            }
+
+            .category-btn {
+                padding: 10px 20px;
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotateHint {
+            50% {
+                transform: rotate(5deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="historyBtn">
+        <a href="#" class="history-link">📖記錄</a>
+    </div>
+
+    <div id="logoutBtn">
+        <a class="logout-link" onclick="logout()">🏃 登出</a>
+    </div>
+
+    <div class="login-container" id="loginContainer">
+        <h1 class="header">🌊 楊楊獎品屋 🌟</h1>
+        <form id="loginForm">
+            <input type="text" placeholder="👤 Username" id="username" required>
+            <input type="password" placeholder="🔑 Password" id="password" required>
+            <button type="submit">Login 🐬</button>
+        </form>
+    </div>
+
+    <div id="prizeSection" style="display:none;">
+        <h1 class="header">🎁 歡迎來兌換獎品！🐚</h1>
+        <div id="userPoints" class="points-display"></div>
+        <div style="font-size:1em;color:var(--text-blue);text-align: center; width: 100%;">📞請主動聯絡巧琳阿姨獲取⭐⭐</div>
+        <div class="category-filter" id="categoryFilter">
+            <button class="category-btn active" data-category="all">🌟全部獎品🌟</button>
+            <button class="category-btn" data-category="pony">🌈 My Little Pony </button>
+            <button class="category-btn" data-category="min">👾 Minecraft</button>
+            <button class="category-btn" data-category="nezha">🤠 哪吒</button>
+            <button class="category-btn" data-category="other">🕊️ 文具/其他</button>
+        </div>
+
+        <div class="prize-grid" id="prizeGrid"></div>
+    </div>
+
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">×</span>
+            <img class="modal-image" id="expandedImage">
+        </div>
+    </div>
+
+    <script>
+        // 配置参数
+        const SESSION_TIMEOUT = 10 * 60 * 1000; // 10分钟会话有效期
+        const users = {
+            'admin': { pw: '123456', points: 200, history: 'admin_history.html' },
+            'starry': { pw: '161104', points: 3, history: 'starry_history.html' },
+            'lucas': { pw: '190228', points: 0, history: 'lucas_history.html' }
+        };
+
+        // 系统状态
+        let currentUser = null;
+        let sessionTimer = null;
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedUser = JSON.parse(localStorage.getItem('yangyang_prize_user'));
+
+            if (savedUser && Date.now() < savedUser.expires) {
+                // 自动登录有效会话
+                currentUser = savedUser;
+                handleSuccessfulLogin(savedUser.username);
+            } else {
+                // 清除无效会话
+                clearLoginState();
+            }
+        });
+
+        // 登录表单提交
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.toLowerCase();
+            const password = document.getElementById('password').value;
+
+            if (authenticateUser(username, password)) {
+                currentUser = createUserSession(username);
+                saveLoginState(username);
+                handleSuccessfulLogin(username);
+            } else {
+                showLoginError();
+            }
+        });
+
+        // 核心功能函数
+        function authenticateUser(username, password) {
+            return users[username] && users[username].pw === password;
+        }
+
+        function createUserSession(username) {
+            return {
+                username: username,
+                points: users[username].points,
+                expires: Date.now() + SESSION_TIMEOUT
+            };
+        }
+
+        function handleSuccessfulLogin(username) {
+            // 更新界面状态
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('prizeSection').style.display = 'block';
+            document.getElementById('historyBtn').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'block';
+            document.querySelector('.history-link').href = users[username].history;
+
+            // 更新用户信息显示
+            updatePointsDisplay();
+            showPrizes();
+
+            // 启动会话计时器
+            startSessionTimer();
+        }
+
+        function saveLoginState(username) {
+            localStorage.setItem('yangyang_prize_user', JSON.stringify({
+                username: username,
+                expires: Date.now() + SESSION_TIMEOUT,
+                points: users[username].points
+            }));
+        }
+
+        function clearLoginState() {
+            localStorage.removeItem('yangyang_prize_user');
+            currentUser = null;
+
+            // 重置界面状态
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('prizeSection').style.display = 'none';
+            document.getElementById('historyBtn').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'none';
+        }
+
+        function logout() {
+            clearLoginState();
+            alert('👋 已成功登出！');
+            location.reload();
+        }
+
+        function startSessionTimer() {
+            clearTimeout(sessionTimer);
+            sessionTimer = setTimeout(() => {
+                alert('⏳ 您的登入已過期，請重新登入');
+                logout();
+            }, SESSION_TIMEOUT);
+        }
+
+        const prizes = [
+            {
+                name: '[第1彈] <br> 小馬寶莉彩虹包',
+                points: 0.5,
+                stock: 30,
+                category: 'pony',
+                image: 'image/ponycard_v1.jpeg'
+            },
+            {
+                name: '[第2彈] <br> 小馬寶莉彩虹包',
+                points: 0.5,
+                stock: 30,
+                category: 'pony',
+                image: 'image/ponycard_v2.jpeg'
+            },
+            {
+                name: '[第3彈] <br> 小馬寶莉彩虹包',
+                points: 0.5,
+                stock: 30,
+                category: 'pony',
+                image: 'image/ponycard_v3.jpeg'
+            },
+            {
+                name: '[扭蛋簿-藍色] <br> 小馬寶莉',
+                points: 1.5,
+                stock: 1,
+                category: 'pony',
+                image: 'image/ponybook_1.jpeg'
+            },
+            {
+                name: '閃光鉛筆 ✏️',
+                points: 20,
+                stock: 8,
+                category: 'stationery',
+                image: 'https://picsum.photos/200/200?random=3'
+            },
+            {
+                name: '太空人公仔 👨🚀',
+                points: 80,
+                stock: 3,
+                category: 'toy',
+                image: 'https://picsum.photos/200/200?random=4'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            },
+            {
+                name: '彩虹貼紙 🌈',
+                points: 15,
+                stock: 20,
+                category: 'sticker',
+                image: 'https://picsum.photos/200/200?random=5'
+            }
+        ];
+
+        const imageModal = document.getElementById('imageModal');
+        const expandedImage = document.getElementById('expandedImage');
+        const closeModal = document.getElementById('closeModal');
+
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.toLowerCase();;
+            const password = document.getElementById('password').value;
+
+            if (users[username] && users[username].pw === password) {
+                currentUser = {
+                    username: username,
+                    points: users[username].points
+                };
+
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('prizeSection').style.display = 'block';
+                document.getElementById('historyBtn').style.display = 'block';
+                document.querySelector('.history-link').href = users[username].history;
+                updatePointsDisplay();
+                showPrizes();
+            } else {
+                alert('❌ 帳號或密碼錯誤！');
+            }
+        });
+
+        function updatePointsDisplay() {
+            const display = document.getElementById('userPoints');
+            display.innerHTML = `
+                <span style="color:var(--text-blue);">👩‍🔬 ${currentUser.username.toUpperCase()}</span><br>
+                擁有星星：<span style="font-size:1.5em">${currentUser.points}</span> 顆 🌟
+                <div style="font-size:0.8em;color:var(--text-blue);opacity:0.8;">默書: 100 +2⭐, 90up +1.5⭐, 80up +1⭐</div>
+                <div style="font-size:0.8em;color:var(--text-blue);opacity:0.8;">(100分額外送1包卡/額外+1⭐)</div>
+            `;
+        }
+
+        function showPrizes() {
+            filterPrizes('all');
+            initCategoryFilter();
+        }
+
+        function initCategoryFilter() {
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterPrizes(this.dataset.category);
+                });
+            });
+        }
+
+        function filterPrizes(category) {
+            const filtered = category === 'all'
+                ? prizes
+                : prizes.filter(p => p.category === category);
+            renderPrizes(filtered);
+        }
+
+        function renderPrizes(prizeList) {
+            const grid = document.getElementById('prizeGrid');
+            grid.innerHTML = prizeList.map(prize => `
+                <div class="prize-card">
+                    <img src="${prize.image}" class="prize-image" alt="${prize.name}">
+                    <h3 style="color:var(--text-blue);">${prize.name}</h3>
+                    <div class="points">
+                        ${prize.points} 顆星星 ⭐
+                        ${currentUser.points >= prize.points && prize.stock > 0 ?
+                    '<div style="color:var(--accent-blue);">✓ 可以兌換</div>' :
+                    '<div style="color:var(--text-blue);opacity:0.6;">✗ 無法兌換</div>'}
+                    </div>
+                    <div class="stock">剩餘數量：${prize.stock}</div>
+                </div>
+            `).join('');
+
+            initImageClick();
+        }
+
+        function initImageClick() {
+            document.querySelectorAll('.prize-image').forEach(img => {
+                img.addEventListener('click', function () {
+                    expandedImage.src = this.src;
+                    expandedImage.alt = this.alt;
+                    imageModal.classList.add('active');
+                });
+            });
+        }
+
+        closeModal.addEventListener('click', () => imageModal.classList.remove('active'));
+        imageModal.addEventListener('click', (e) => e.target === imageModal && imageModal.classList.remove('active'));
+        document.addEventListener('keydown', (e) => e.key === 'Escape' && imageModal.classList.remove('active'));
+    </script>
+</body>
+
+</html>

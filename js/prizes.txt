@@ -1,0 +1,100 @@
+[
+    {
+        "name": "[卡牌-第1彈] <br> 小馬寶莉彩虹包",
+        "points": 0.2,
+        "stock": 30,
+        "category": "pony",
+        "image": "image/ponycard_v1.jpeg"
+    },
+    {
+        "name": "[卡牌-第2彈] <br> 小馬寶莉彩虹包",
+        "points": 0.2,
+        "stock": 30,
+        "category": "pony",
+        "image": "image/ponycard_v2.jpeg"
+    },
+    {
+        "name": "[卡牌-第3彈] <br> 小馬寶莉彩虹包",
+        "points": 0.2,
+        "stock": 30,
+        "category": "pony",
+        "image": "image/ponycard_v3.jpeg"
+    },
+    {
+        "name": "[扭蛋簿-藍色] <br> 小馬寶莉",
+        "points": 1.5,
+        "stock": 1,
+        "category": "pony",
+        "image": "image/ponybook_1.jpeg"
+    },
+    {
+        "name": "[鎖匙扣燈] <br> Minecraft",
+        "points": 1,
+        "stock": 4,
+        "category": "min",
+        "image": "image/minecraft_04.jpeg"
+    },
+    {
+        "name": "[盲盒Lego] <br> Minecraft",
+        "points": 1.5,
+        "stock": 8,
+        "category": "min",
+        "image": "image/minecraft_01.jpeg"
+    },
+    {
+        "name": "[盲盒鎖匙扣] <br> Minecraft",
+        "points": 1,
+        "stock": 24,
+        "category": "min",
+        "image": "image/minecraft_02.jpeg"
+    },
+    {
+        "name": "[卡牌] <br> Minecraft",
+        "points": 0.5,
+        "stock": 30,
+        "category": "min",
+        "image": "image/minecraft_03.jpeg"
+    },
+    {
+        "name": "[卡牌-第2彈] <br> 哪吒2",
+        "points": 0.2,
+        "stock": 120,
+        "category": "nezha",
+        "image": "image/nezha_1.jpeg"
+    },
+    {
+        "name": "[卡牌-第1彈] <br> 哪吒2",
+        "points": 0.5,
+        "stock": 30,
+        "category": "nezha",
+        "image": "image/nezha_2.jpeg"
+    },
+    {
+        "name": "[鎖匙扣] <br> 哪吒",
+        "points": 1,
+        "stock": 1,
+        "category": "nezha",
+        "image": "image/nezha_3.jpeg"
+    },
+    {
+        "name": "[鎖匙扣] <br> 敖丙",
+        "points": 1,
+        "stock": 1,
+        "category": "nezha",
+        "image": "image/nezha_4.jpeg"
+    },
+    {
+        "name": "[捏捏樂] <br> 哪吒",
+        "points": 1,
+        "stock": 1,
+        "category": "nezha",
+        "image": "image/nezha_5.jpeg"
+    },
+    {
+        "name": "[捏捏樂] <br> 敖丙",
+        "points": 1,
+        "stock": 1,
+        "category": "nezha",
+        "image": "image/nezha_6.jpeg"
+    }
+]

@@ -94,6 +94,37 @@
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         }
 
+        /* 分頁控制 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .page-btn {
+            padding: 8px 16px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .page-btn:hover {
+            background: var(--hover-blue);
+        }
+
+        .page-btn.active {
+            background: var(--text-blue);
+        }
+
+        .page-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
         /* 響應式設計調整 */
         @media (max-width: 768px) {
             .history-container {
@@ -192,69 +223,103 @@
 
         <div class="history-table">
             <table>
-                <tr>
-                    <th class="no-break">📅 日期</th>
-                    <th class="no-break">📝 事由</th>
-                    <th class="no-break">⭐ 星星變化</th>
-                </tr>
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[段考2] 視覺藝術 (95分)</td>
-                    <td>⭐+1.5 </td>
-                </tr> 
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[段考2] 音樂 (95分)</td>
-                    <td>⭐+1.5 </td>
-                </tr> 
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[段考2] 英文說話 (95分)</td>
-                    <td>⭐+1.5 </td>
-                </tr>   
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[段考2] 英文聆聽 (Bonus)</td>
-                    <td>⭐+1 </td>
-                </tr>  
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[段考2] 英文聆聽 (100分)</td>
-                    <td>⭐+2 </td>
-                </tr>     
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[段考2] 英文閱寫 (80分)</td>
-                    <td>⭐+1 </td>
-                </tr>     
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[段考2] 普通話 (94分)</td>
-                    <td>⭐+1.5 </td>
-                </tr>     
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[段考2] 中文聆聽 (81分)</td>
-                    <td>⭐+1 </td>
-                </tr>     
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[段考2] 中文說話 (85分)</td>
-                    <td>⭐+1 </td>
-                </tr>     
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>[默書] 中文 (95分)</td>
-                    <td>⭐+1.5 </td>
-                </tr>     
-                <tr>
-                    <td>2025-04-01</td>
-                    <td>[默書] 英文 (93分)</td>
-                    <td>⭐+1.5</td>
-                </tr>                           
+                <thead>
+                    <tr>
+                        <th class="no-break">📅 日期</th>
+                        <th class="no-break">📝 事由</th>
+                        <th class="no-break">⭐ 星星變化</th>
+                    </tr>
+                </thead>
+                <tbody id="records-body">
+                    <!-- 記錄將由JavaScript動態生成 -->
+                </tbody>
             </table>
         </div>
+
+        <div class="pagination">
+            <button id="prev-btn" class="page-btn" disabled>上一頁</button>
+            <span id="page-info">第 1 頁</span>
+            <button id="next-btn" class="page-btn">下一頁</button>
+        </div>
     </div>
+
+    <script>
+        // 所有記錄數據
+        const allRecords = [
+            { date: "2025-04-12", reason: "[兌換] 第2彈 哪吒2", stars: "⭐-0.4" },
+            { date: "2025-04-12", reason: "[兌換] 第2彈 (小馬寶莉)", stars: "⭐-0.6" },
+            { date: "2025-04-12", reason: "[兌換] 捏捏樂 (敖丙)", stars: "⭐-1" },
+            { date: "2025-04-10", reason: "[段考2] 視覺藝術 (95分)", stars: "⭐+1.5" },
+            { date: "2025-04-10", reason: "[段考2] 音樂 (95分)", stars: "⭐+1.5" },
+            { date: "2025-04-10", reason: "[段考2] 英文說話 (95分)", stars: "⭐+1.5" },
+            { date: "2025-04-10", reason: "[段考2] 英文聆聽 (Bonus)", stars: "⭐+1" },
+            { date: "2025-04-10", reason: "[段考2] 英文聆聽 (100分)", stars: "⭐+2" },
+            { date: "2025-04-10", reason: "[段考2] 英文閱寫 (80分)", stars: "⭐+1" },
+            { date: "2025-04-10", reason: "[段考2] 普通話 (94分)", stars: "⭐+1.5" },
+            { date: "2025-04-10", reason: "[段考2] 中文聆聽 (81分)", stars: "⭐+1" },
+            { date: "2025-04-10", reason: "[段考2] 中文說話 (85分)", stars: "⭐+1" },
+            { date: "2025-04-10", reason: "[默書] 中文 (95分)", stars: "⭐+1.5" },
+            { date: "2025-04-01", reason: "[默書] 英文 (93分)", stars: "⭐+1.5" }
+        ];
+
+        // 分頁變量
+        const recordsPerPage = 10;
+        let currentPage = 1;
+        const totalPages = Math.ceil(allRecords.length / recordsPerPage);
+
+        // DOM元素
+        const recordsBody = document.getElementById('records-body');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageInfo = document.getElementById('page-info');
+
+        // 渲染表格
+        function renderTable() {
+            // 計算當前頁的記錄範圍
+            const startIndex = (currentPage - 1) * recordsPerPage;
+            const endIndex = Math.min(startIndex + recordsPerPage, allRecords.length);
+            
+            // 清空表格
+            recordsBody.innerHTML = '';
+            
+            // 添加當前頁的記錄
+            for (let i = startIndex; i < endIndex; i++) {
+                const record = allRecords[i];
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.date}</td>
+                    <td>${record.reason}</td>
+                    <td>${record.stars}</td>
+                `;
+                recordsBody.appendChild(row);
+            }
+            
+            // 更新分頁信息
+            pageInfo.textContent = `第 ${currentPage} 頁 / 共 ${totalPages} 頁`;
+            
+            // 更新按鈕狀態
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+        }
+
+        // 事件監聽器
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        });
+
+        // 初始渲染
+        renderTable();
+    </script>
 </body>
 
 </html>
