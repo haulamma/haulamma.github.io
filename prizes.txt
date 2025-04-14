@@ -9,7 +9,7 @@
     {
         "name": "[卡牌-第2彈] <br> 小馬寶莉彩虹包",
         "points": 0.2,
-        "stock": 30,
+        "stock": 28,
         "category": "pony",
         "image": "image/ponycard_v2.jpeg"
     },
@@ -58,7 +58,7 @@
     {
         "name": "[卡牌-第2彈] <br> 哪吒2",
         "points": 0.2,
-        "stock": 120,
+        "stock": 118,
         "category": "nezha",
         "image": "image/nezha_1.jpeg"
     },
@@ -93,7 +93,7 @@
     {
         "name": "[捏捏樂] <br> 敖丙",
         "points": 1,
-        "stock": 1,
+        "stock": 0,
         "category": "nezha",
         "image": "image/nezha_6.jpeg"
     }
