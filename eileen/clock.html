@@ -2,6 +2,7 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2025年8月22日</title>
     <style>
         body {
@@ -21,6 +22,7 @@
             justify-content: center;
             height: 100%;
             color: white;
+            transition: transform 0.3s ease;
         }
 
         .countdown {
@@ -30,6 +32,7 @@
             border-radius: 15px;
             background: rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
         }
 
         h1 {
@@ -42,6 +45,7 @@
             display: flex;
             gap: 2rem;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .time-unit {
@@ -49,6 +53,7 @@
             padding: 1rem 2rem;
             border-radius: 10px;
             min-width: 120px;
+            transition: all 0.3s ease;
         }
 
         .number {
@@ -62,7 +67,6 @@
             opacity: 0.8;
         }
 
-        /* Starry sky effect */
         .stars {
             position: fixed;
             width: 100%;
@@ -77,17 +81,16 @@
             animation: twinkle var(--duration) ease-in-out infinite;
         }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        /* 流星效果 */
         .meteor {
             position: absolute;
             width: 2px;
             background: linear-gradient(90deg, white, transparent);
             animation: meteor 2s linear infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
 
         @keyframes meteor {
@@ -98,6 +101,76 @@
             100% {
                 transform: translate(500px, 500px) rotate(45deg);
                 opacity: 0;
+            }
+        }
+
+        
+        @media (max-width: 1200px) {
+            .time-unit {
+                padding: 1rem;
+                min-width: 100px;
+            }
+            .number {
+                font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .countdown {
+                width: 90%;
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 2em;
+                margin-bottom: 1rem;
+            }
+            .timer {
+                gap: 1rem;
+            }
+            .time-unit {
+                flex: 1 1 40%;
+                padding: 0.8rem;
+                min-width: auto;
+            }
+            .number {
+                font-size: 2em;
+            }
+            .label {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            .timer {
+                gap: 0.5rem;
+            }
+            .time-unit {
+                flex: 1 1 45%;
+                padding: 0.5rem;
+            }
+            .number {
+                font-size: 1.8em;
+            }
+            .label {
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .countdown {
+                transform: scale(0.9);
+            }
+        }
+
+        @media (max-height: 400px) {
+            .countdown {
+                transform: scale(0.8);
             }
         }
     </style>
@@ -129,10 +202,13 @@
     </div>
 
     <script>
-        // Create a starry sky
+        
         function createStars() {
             const starsContainer = document.querySelector('.stars');
-            for (let i = 0; i < 200; i++) {
+            const starCount = window.innerWidth < 768 ? 100 : 200;
+            
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
@@ -144,7 +220,23 @@
             }
         }
 
-        // Countdown
+       
+        function handleResize() {
+            const container = document.querySelector('.container');
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            
+            if (aspectRatio < 0.7) {
+                container.style.transform = 'scale(0.9)';
+            } else if (aspectRatio < 0.5) {
+                container.style.transform = 'scale(0.8)';
+            } else {
+                container.style.transform = 'scale(1)';
+            }
+            
+            createStars();
+        }
+
+     
         function updateTimer() {
             const targetDate = new Date('2025-08-22T00:00:00');
             const now = new Date();
@@ -169,13 +261,8 @@
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
 
-        // initialization
-        createStars();
-        setInterval(updateTimer, 1000);
-        updateTimer(); 
-
-        // Add random shooting stars
-        setInterval(() => {
+      
+        function createMeteor() {
             const meteor = document.createElement('div');
             meteor.className = 'meteor';
             meteor.style.top = Math.random() * 100 + '%';
@@ -185,7 +272,24 @@
             setTimeout(() => {
                 meteor.remove();
             }, 2000);
-        }, 5000);
+        }
+
+    
+        window.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            handleResize();
+            updateTimer();
+            setInterval(updateTimer, 1000);
+            setInterval(createMeteor, window.innerWidth < 768 ? 8000 : 5000);
+        });
+
+        window.addEventListener('resize', () => {
+            handleResize();
+            clearInterval(meteorInterval);
+            meteorInterval = setInterval(createMeteor, window.innerWidth < 768 ? 8000 : 5000);
+        });
+
+        let meteorInterval = setInterval(createMeteor, window.innerWidth < 768 ? 8000 : 5000);
     </script>
 </body>
 </html>
