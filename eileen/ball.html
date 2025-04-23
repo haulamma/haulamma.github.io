@@ -217,49 +217,72 @@
             if (e.key === 'ArrowRight') movePlatform('right');
         });
 
-        // 遊戲邏輯更新
-        function updateGame() {
-            if (!gameRunning) return;
+function updateGame() {
+    if (!gameRunning) return;
 
-            ballX += ballSpeedX;
-            ballY += ballSpeedY;
+    // 更新位置前先檢測碰撞
+    const nextX = ballX + ballSpeedX;
+    const nextY = ballY + ballSpeedY;
 
-            // 邊界碰撞
-            if (ballX <= 0 || ballX >= gameWidth - ballSize) {
-                ballSpeedX *= -1;
-                createCollisionEffect();
-            }
-            if (ballY <= 0) {
-                ballSpeedY *= -1;
-                createCollisionEffect();
-            }
+    // 水平邊界碰撞檢測
+    if (nextX <= 0 || nextX >= gameWidth - ballSize) {
+        ballSpeedX *= -1;
+        // 修正位置防止卡牆
+        ballX = Math.max(0, Math.min(gameWidth - ballSize, nextX));
+        createCollisionEffect();
+    } else {
+        ballX = nextX;
+    }
 
-            // 平台碰撞檢測
-            if (ballY >= gameHeight - platformHeight * 3 - ballSize &&
-                ballX + ballSize >= platformX &&
-                ballX <= platformX + platformWidth) {
-                
-                ballSpeedY *= -1;
-                score++;
-                scoreBoard.textContent = `得分: ${score}`;
-                ballSpeedX *= 1.05;
-                ballSpeedY *= 1.05;
-                createCollisionEffect();
-            }
+    // 垂直邊界碰撞檢測
+    if (nextY <= 0) {
+        ballSpeedY *= -1;
+        // 修正位置防止卡頂
+        ballY = Math.max(0, nextY);
+        createCollisionEffect();
+    } else {
+        ballY = nextY;
+    }
 
-            // 遊戲結束判斷
-            if (ballY >= gameHeight - ballSize) {
-                gameRunning = false;
-                finalScore.textContent = score;
-                gameOverScreen.style.display = 'block';
-                return;
-            }
+    // 平台碰撞檢測 (改進版)
+    const platformTop = gameHeight - platformHeight * 3;
+    const platformBottom = platformTop + platformHeight;
+    const ballBottom = ballY + ballSize;
 
-            // 更新位置
-            ball.style.left = ballX + 'px';
-            ball.style.top = ballY + 'px';
-            requestAnimationFrame(updateGame);
-        }
+    if (ballBottom >= platformTop && 
+        ballY <= platformBottom &&
+        ballX + ballSize >= platformX && 
+        ballX <= platformX + platformWidth) {
+        
+        // 計算碰撞點相對位置
+        const hitPos = (ballX + ballSize/2) - platformX;
+        const ratio = (hitPos / platformWidth) * 2 - 1; // -1到1的範圍
+        
+        // 動態調整反彈角度
+        const angle = Math.max(-Math.PI/2, Math.min(Math.PI/2, ratio * Math.PI/3));
+        const speed = Math.sqrt(ballSpeedX*ballSpeedX + ballSpeedY*ballSpeedY);
+        
+        ballSpeedX = Math.sin(angle) * speed * 1.05;
+        ballSpeedY = -Math.cos(angle) * speed * 1.05;
+        
+        score++;
+        scoreBoard.textContent = `得分: ${score}`;
+        createCollisionEffect();
+    }
+
+    // 遊戲結束檢測
+    if (ballY >= gameHeight - ballSize) {
+        gameRunning = false;
+        finalScore.textContent = score;
+        gameOverScreen.style.display = 'block';
+        return;
+    }
+
+    // 更新顯示位置
+    ball.style.left = ballX + 'px';
+    ball.style.top = ballY + 'px';
+    requestAnimationFrame(updateGame);
+}
 
         // 重啟遊戲
         function resetGame() {
