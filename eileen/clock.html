@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>星空倒數 - 2025年8月22日</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(45deg, #0b0c2e, #1a1b4b, #2d1b4b);
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: white;
+        }
+
+        .countdown {
+            text-align: center;
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .timer {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .time-unit {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            min-width: 120px;
+        }
+
+        .number {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .label {
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+
+        /* Starry sky effect */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* 流星效果 */
+        .meteor {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(90deg, white, transparent);
+            animation: meteor 2s linear infinite;
+        }
+
+        @keyframes meteor {
+            0% {
+                transform: translate(-200px, -200px) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(500px, 500px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <div class="countdown">
+            <h1>2025年8月22日</h1>
+            <div class="timer">
+                <div class="time-unit">
+                    <div class="number" id="days">00</div>
+                    <div class="label">天</div>
+                </div>
+                <div class="time-unit">
+                    <div class="number" id="hours">00</div>
+                    <div class="label">時</div>
+                </div>
+                <div class="time-unit">
+                    <div class="number" id="minutes">00</div>
+                    <div class="label">分</div>
+                </div>
+                <div class="time-unit">
+                    <div class="number" id="seconds">00</div>
+                    <div class="label">秒</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create a starry sky
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Countdown
+        function updateTimer() {
+            const targetDate = new Date('2025-08-22T00:00:00');
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        // initialization
+        createStars();
+        setInterval(updateTimer, 1000);
+        updateTimer(); 
+
+        // Add random shooting stars
+        setInterval(() => {
+            const meteor = document.createElement('div');
+            meteor.className = 'meteor';
+            meteor.style.top = Math.random() * 100 + '%';
+            meteor.style.left = Math.random() * 100 + '%';
+            document.querySelector('.stars').appendChild(meteor);
+            
+            setTimeout(() => {
+                meteor.remove();
+            }, 2000);
+        }, 5000);
+    </script>
+</body>
+</html>
