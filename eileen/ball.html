@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>響應式炫光彈跳球</title>
+    <title>炫光彈跳球 - 全平台版</title>
     <style>
         :root {
             --game-size: min(90vw, 90vh);
@@ -18,6 +18,7 @@
             font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
             color: white;
             touch-action: none;
+            overflow: hidden;
         }
 
         #gameHeader {
@@ -56,6 +57,7 @@
             position: absolute;
             box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
             transition: transform 0.1s;
+            transform: translate3d(0,0,0);
         }
 
         #platform {
@@ -66,7 +68,8 @@
             position: absolute;
             bottom: 5%;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-            transition: transform 0.2s;
+            transition: all 0.2s ease-out;
+            transform: translate3d(0,0,0);
         }
 
         #scoreBoard {
@@ -111,11 +114,14 @@
 
         .touch-control {
             position: fixed;
-            bottom: 10%;
+            bottom: 15%;
             width: 40%;
-            height: 15%;
+            height: 20%;
             opacity: 0.3;
-            transition: opacity 0.3s;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            transition: all 0.3s;
+            z-index: 100;
         }
 
         #leftTouch {
@@ -130,6 +136,11 @@
             .touch-control {
                 display: none;
             }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
@@ -153,15 +164,16 @@
     <div class="touch-control" id="rightTouch"></div>
 
     <script>
-          // 修正後的JavaScript部分
         let gameWidth, gameHeight;
         let ballSize, platformWidth, platformHeight;
         let ballX, ballY, platformX;
-        let ballSpeedX = 0;  // 初始化為0
-        let ballSpeedY = 0;  // 初始化為0
+        let ballSpeedX = 4;
+        let ballSpeedY = -4;
         let score = 0;
         let gameRunning = true;
         let animationFrameId;
+        let isDragging = false;
+        let touchStartX = 0;
 
         const ball = document.getElementById('ball');
         const platform = document.getElementById('platform');
@@ -185,82 +197,91 @@
             platform.style.height = platformHeight + 'px';
         }
 
-        // 初始化位置和速度
+        // 初始化位置
         function initPositions() {
             ballX = gameWidth / 2 - ballSize/2;
             ballY = gameHeight / 2 - ballSize/2;
             platformX = (gameWidth - platformWidth) / 2;
-            
-            // 設置初始速度（固定值）
-            ballSpeedX = 4;
-            ballSpeedY = -4;
             
             ball.style.left = ballX + 'px';
             ball.style.top = ballY + 'px';
             platform.style.left = platformX + 'px';
         }
 
-        // 控制平台移動
+        // 平台控制
         function movePlatform(direction) {
             if (!gameRunning) return;
             
-            const moveAmount = gameWidth * 0.05;
+            const moveAmount = gameWidth * 0.03;
             platformX = direction === 'left' 
                 ? Math.max(0, platformX - moveAmount)
                 : Math.min(gameWidth - platformWidth, platformX + moveAmount);
             
             platform.style.left = platformX + 'px';
             platform.style.transform = `scaleX(0.9)`;
-            setTimeout(() => platform.style.transform = `scaleX(1)`, 100);
+            setTimeout(() => platform.style.transform = 'scaleX(1)', 100);
         }
 
         // 觸控事件處理
-        document.getElementById('leftTouch').addEventListener('touchstart', () => movePlatform('left'));
-        document.getElementById('rightTouch').addEventListener('touchstart', () => movePlatform('right'));
-        
-        // 鍵盤事件處理
-        document.addEventListener('keydown', (e) => {
+        function handleTouchStart(e) {
+            isDragging = true;
+            touchStartX = e.touches[0].clientX;
+            e.preventDefault();
+        }
+
+        function handleTouchMove(e) {
+            if (!isDragging || !gameRunning) return;
+            
+            const currentX = e.touches[0].clientX;
+            const deltaX = currentX - touchStartX;
+            
+            if (Math.abs(deltaX) > 5) {
+                const direction = deltaX > 0 ? 'right' : 'left';
+                movePlatform(direction);
+                touchStartX = currentX;
+            }
+            e.preventDefault();
+        }
+
+        function handleTouchEnd() {
+            isDragging = false;
+        }
+
+        // 鍵盤控制
+        function handleKeyDown(e) {
             if (e.key === 'ArrowLeft') movePlatform('left');
             if (e.key === 'ArrowRight') movePlatform('right');
-        });
+            if (e.code === 'Space' && !gameRunning) resetGame();
+        }
 
-function updateGame() {
+        // 遊戲邏輯
+        function updateGame() {
             if (!gameRunning) return;
 
-            // 更新位置前先檢測碰撞
-            const nextX = ballX + ballSpeedX;
-            const nextY = ballY + ballSpeedY;
+            // 更新位置
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
 
-            // 水平邊界碰撞檢測
-            if (nextX <= 0 || nextX >= gameWidth - ballSize) {
+            // 邊界碰撞
+            if (ballX <= 0 || ballX >= gameWidth - ballSize) {
                 ballSpeedX *= -1;
-                ballX = Math.max(0, Math.min(gameWidth - ballSize, nextX));
-            } else {
-                ballX = nextX;
+                ballX = Math.max(0, Math.min(gameWidth - ballSize, ballX));
             }
-
-            // 垂直邊界碰撞檢測
-            if (nextY <= 0) {
+            if (ballY <= 0) {
                 ballSpeedY *= -1;
-                ballY = Math.max(0, nextY);
-            } else {
-                ballY = nextY;
+                ballY = Math.max(0, ballY);
             }
 
-            // 平台碰撞檢測
-            const platformTop = gameHeight - platformHeight * 3;
-            const platformBottom = platformTop + platformHeight;
-            const ballBottom = ballY + ballSize;
-
-            if (ballBottom >= platformTop && 
-                ballY <= platformBottom &&
+            // 平台碰撞
+            const platformTop = gameHeight - platformHeight * 4;
+            if (ballY + ballSize >= platformTop &&
                 ballX + ballSize >= platformX && 
                 ballX <= platformX + platformWidth) {
                 
                 const hitPos = (ballX + ballSize/2) - platformX;
                 const ratio = (hitPos / platformWidth) * 2 - 1;
-                const angle = Math.max(-Math.PI/2, Math.min(Math.PI/2, ratio * Math.PI/3));
-                const speed = Math.sqrt(ballSpeedX*ballSpeedX + ballSpeedY*ballSpeedY);
+                const angle = ratio * Math.PI/3;
+                const speed = Math.sqrt(ballSpeedX**2 + ballSpeedY**2);
                 
                 ballSpeedX = Math.sin(angle) * speed * 1.05;
                 ballSpeedY = -Math.cos(angle) * speed * 1.05;
@@ -269,7 +290,7 @@ function updateGame() {
                 scoreBoard.textContent = `得分: ${score}`;
             }
 
-            // 遊戲結束檢測
+            // 遊戲結束
             if (ballY >= gameHeight - ballSize) {
                 gameRunning = false;
                 finalScore.textContent = score;
@@ -278,7 +299,7 @@ function updateGame() {
                 return;
             }
 
-            // 更新顯示位置
+            // 更新顯示
             ball.style.left = ballX + 'px';
             ball.style.top = ballY + 'px';
             animationFrameId = requestAnimationFrame(updateGame);
@@ -289,6 +310,8 @@ function updateGame() {
             cancelAnimationFrame(animationFrameId);
             gameRunning = true;
             score = 0;
+            ballSpeedX = 4;
+            ballSpeedY = -4;
             gameOverScreen.style.display = 'none';
             scoreBoard.textContent = '得分: 0';
             initPositions();
@@ -299,10 +322,19 @@ function updateGame() {
         function init() {
             initGameSize();
             initPositions();
+            
+            // 事件監聽
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('touchstart', handleTouchStart);
+            document.addEventListener('touchmove', handleTouchMove);
+            document.addEventListener('touchend', handleTouchEnd);
+            document.querySelector('.restartBtn').addEventListener('click', resetGame);
+            
             window.addEventListener('resize', () => {
                 initGameSize();
                 initPositions();
             });
+
             animationFrameId = requestAnimationFrame(updateGame);
         }
 
